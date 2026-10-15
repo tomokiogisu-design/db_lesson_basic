@@ -1,7 +1,4 @@
-mysql -u root -p
-SHOW DATABASES;
-USE db_lesson;
-
+-- Q1
 CREATE TABLE departments (
     -> department_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     -> name VARCHAR(20) NOT NULL,
@@ -9,16 +6,14 @@ CREATE TABLE departments (
     -> updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     -> );
 
-DESC departments;
+-- Q2
 DESC people;
 
 ALTER TABLE people ADD department_id INT UNSIGNED AFTER email;
 
-ALTER TABLE people MODIFY department_id INT(10) UNSIGNED;
-warningと出たので、
 ALTER TABLE people MODIFY department_id INT UNSIGNED;
 
-
+-- Q3
 INSERT INTO departments (name)
     -> VALUES
     -> ('営業'),('開発'),('経理'),('人事'),('情報システム');
@@ -49,17 +44,19 @@ INSERT INTO reports (person_id,content)
     -> (16,'９を決定いたしました'),
     -> (17,'１０を決定いたしました');
 
+-- Q4
 UPDATE people SET department_id = 1 WHERE person_id = 1;
 UPDATE people SET department_id = 2 WHERE person_id = 2;
 UPDATE people SET department_id = 3 WHERE person_id = 3;
 UPDATE people SET department_id = 4 WHERE person_id = 4;
 UPDATE people SET department_id = 5 WHERE person_id = 6;
 
+-- Q5
 SELECT name,age FROM people WHERE gender = 1 ORDER BY age DESC;
 
 -- Q6
-peopleというテーブルのname,email,ageというカラムのデータを表示するための命令です。
-このとき条件が指定されているので、department_idが１のレコードのみ表示されます。
+peopleというテーブルのname,email,ageというカラムの値を表示するための命令です。
+このとき条件が指定されているので、department_idが1のレコードのみ表示されます。
 順番はcreated_atが昇順で表示されます。
 
 -- Q7
@@ -73,8 +70,8 @@ SELECT name,age FROM people WHERE department_id = 1 ORDER BY age;
 SELECT AVG(age) AS average_age FROM people WHERE gender = 2 AND department_id = 2;
 
 -- Q10
-SELECT p.name,p.department_id,r.content FROM people p JOIN reports r USING(person_id);
+SELECT p.name,d.name,r.content FROM people p 
+JOIN departments d USING(department_id) JOIN reports r USING(person_id);
 
 -- Q11
-SELECT p.person_id,p.name FROM people p LEFT OUTER JOIN reports r
-USING (person_id) WHERE r.content IS NULL;
+SELECT p.name FROM people p LEFT OUTER JOIN reports r USING (person_id) WHERE r.content IS NULL;
